@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/navDriverData"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home_nav_bar" />
+
+        <item
+            android:id="@+id/navSync"
+            android:icon="@drawable/ic_sync"
+            android:title="@string/sync_nav_bar" />
+
+        <item
+            android:id="@+id/navAbout"
+            android:icon="@drawable/ic_info"
+            android:title="@string/about_nav_bar" />
     </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/navLogout"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/logout_nav_bar" />
+        </menu>
+    </item>
 </menu>

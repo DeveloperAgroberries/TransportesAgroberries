@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    //nav_bar
+    <color name="primary">#7BB328</color>
+    <color name="secondary">#081165</color>
+    
+    <color name="red">#FF0000</color>
 </resources>

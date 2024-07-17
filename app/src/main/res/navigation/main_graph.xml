@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/navDriverData">
+
+    <fragment
+        android:id="@+id/navDriverData"
+        android:name="com.AgroberriesMX.transportesagroberries.ui.driverdata.DriverDataFragment"
+        android:label="@string/graph_driver_data_fragment"
+        tools:layout="@layout/fragment_driver_data" />
+
+    <fragment
+        android:id="@+id/navSync"
+        android:name="com.AgroberriesMX.transportesagroberries.ui.sync.SyncFragment"
+        android:label="@string/graph_sync_fragment"
+        tools:layout="@layout/fragment_sync" />
+    <fragment
+        android:id="@+id/navAbout"
+        android:name="com.AgroberriesMX.transportesagroberries.ui.about.AboutFragment"
+        android:label="@string/graph_about_fragment"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/scannerFragment"
+        android:name="com.AgroberriesMX.transportesagroberries.ui.scanner.ScannerFragment"
+        android:label="fragment_scanner"
+        tools:layout="@layout/fragment_scanner" />
+
+</navigation>

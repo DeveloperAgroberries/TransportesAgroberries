@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">TransportesAgroberries</string>
+
+    //Nav Bar
+    <string name="home_nav_bar">Home</string>
+    <string name="sync_nav_bar">Sincronización</string>
+    <string name="about_nav_bar">Acerca de...</string>
+    <string name="logout_nav_bar">Salir</string>
+    <string name="title_nav_bar">Agroberries México</string>
+    <string name="subtitle_nav_bar">Transportes</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+
+    //Main Graph
+    <string name="graph_driver_data_fragment">Datos del chofer</string>
+    <string name="graph_sync_fragment">Sincronizacion</string>
+    <string name="graph_about_fragment">Acerca De...</string>
+    <string name="graph_scanner_fragment">Salir</string>
+
 </resources>
