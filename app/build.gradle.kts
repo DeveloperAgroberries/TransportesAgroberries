@@ -44,7 +44,6 @@ android {
 }
 
 dependencies {
-
     val navVersion = "2.7.7"
 
     //NavComponent

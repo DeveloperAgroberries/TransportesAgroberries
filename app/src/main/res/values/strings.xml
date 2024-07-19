@@ -8,13 +8,30 @@
     <string name="logout_nav_bar">Salir</string>
     <string name="title_nav_bar">Agroberries México</string>
     <string name="subtitle_nav_bar">Transportes</string>
-    <string name="open_nav">Open Navigation Drawer</string>
-    <string name="close_nav">Close Navigation Drawer</string>
 
     //Main Graph
     <string name="graph_driver_data_fragment">Datos del chofer</string>
     <string name="graph_sync_fragment">Sincronizacion</string>
     <string name="graph_about_fragment">Acerca De...</string>
-    <string name="graph_scanner_fragment">Salir</string>
+
+    //Driver Data Fragment
+    <string name="plate_driver_data_fragment">Placas del vehiculo:</string>
+    <string name="route_driver_data_fragment">Ruta:</string>
+    <string name="name_driver_data_fragment">Nombre del chofer</string>
+    <string name="confirm_driver_data_fragment">Confirmar</string>
+
+    //Sync Fragment
+    <string name="download_data_sync_fragment">Descargar Catalogos</string>
+    <string name="upload_data_sync_fragment">Enviar Catalogos</string>
+
+    //About Fragment
+    <string name="developed_by_about_fragment">Desarrollado por el equipo de T.I. Agroberries México</string>
+    <string name="doubts_about_fragment">¿Tienes dudas?</string>
+    <string name="contact_us_about_fragment">Contactanos</string>
+    <string name="mail1_about_fragment">aorozco@agroberries.mx</string>
+    <string name="mail2_about_fragment">fcastellanos@agroberries.mx</string>
+    <string name="version_about_fragment">Version: 3.0.0</string>
+    <string name="privacy_policies_about_fragment">Políticas de privacidad</string>
+    <string name="title_activity_login">LoginActivity</string>
 
 </resources>

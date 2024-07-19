@@ -14,7 +14,7 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:background="@color/white"
-        app:cardCornerRadius="360dp"
+        app:cardCornerRadius="36dp"
         app:cardPreventCornerOverlap="false"
         app:strokeColor="@color/black"
         app:strokeWidth="1dp">
