@@ -1,9 +1,8 @@
 package com.AgroberriesMX.transportesagroberries.ui.privacypolicy
 
-import android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.Manifest.permission.CAMERA
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -11,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.AgroberriesMX.transportesagroberries.databinding.ActivityPrivacyPolicyBinding
+import com.AgroberriesMX.transportesagroberries.ui.home.MainActivity
 
 class PrivacyPolicyActivity : AppCompatActivity() {
 
@@ -21,6 +21,8 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         private const val FINE_LOCATION_PERMISSION_CODE = 101
         private const val COARSE_LOCATION_PERMISSION_CODE = 102
         private const val BACKGROUND_LOCATION_PERMISSION_CODE = 103
+        private const val PREFERENCES_KEY = "app_preferences"
+        private const val POLICIES_SHOWN_KEY = "policies_shown"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,46 +37,40 @@ class PrivacyPolicyActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
-//        binding.btnPermissions?.setOnClickListener {
-//            checkPermission(
-//                CAMERA,
-//                CAMERA_PERMISSION_CODE
-//            )
-//        }
-//
-//        binding.btnPermissions?.setOnClickListener {
-//            checkPermission(
-//                ACCESS_FINE_LOCATION,
-//                FINE_LOCATION_PERMISSION_CODE
-//            )
-//        }
-//
-//        binding.btnPermissions?.setOnClickListener {
-//            checkPermission(
-//                ACCESS_COARSE_LOCATION,
-//                COARSE_LOCATION_PERMISSION_CODE
-//            )
-//        }
-//
-//        binding.btnPermissions?.setOnClickListener {
-//            checkPermission(
-//                ACCESS_BACKGROUND_LOCATION,
-//                BACKGROUND_LOCATION_PERMISSION_CODE
-//            )
-//        }
+        binding.btnPermissions.setOnClickListener {
+            val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+            val permissions = listOf(
+                Pair(CAMERA, CAMERA_PERMISSION_CODE),
+                Pair(ACCESS_FINE_LOCATION, FINE_LOCATION_PERMISSION_CODE)
+            )
 
-        initSaveState()
-    }
+            with(sharedPreferences.edit()) {
+                putBoolean(POLICIES_SHOWN_KEY, true)
+                apply()
+            }
 
-    private fun initSaveState() {
-        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+            for (permission in permissions) {
+                checkPermission(permission.first, permission.second)
+            }
 
-        with(sharedPreferences.edit()) {
-            putBoolean("policies_shown", true)
-            apply()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+
         }
-        // Volver a la MainActivity
-//        finish()
+
+//        binding.btnPermissions.setOnClickListener {
+//            val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+//
+//            with(sharedPreferences.edit()){
+//                putBoolean(POLICIES_SHOWN_KEY, true)
+//                apply()
+//            }
+//
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
     }
 
     private fun checkPermission(permission: String, requestCode: Int) {
@@ -85,7 +81,6 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         ) {
             // Requesting the permission
             ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
-            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -95,36 +90,20 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_PERMISSION_CODE) {
+        if (requestCode == FINE_LOCATION_PERMISSION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permisos de ubicación otorgados", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(this, "Permisos de ubicación denegados", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        } else if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permisos de camara otorgados", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 Toast.makeText(this, "Permisos de camara denegados", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } else if (requestCode == FINE_LOCATION_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos de ubicacion otorgados", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(this, "Permisos de ubicacion denegados", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } else if (requestCode == COARSE_LOCATION_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos de ubicacion otorgados", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(this, "Permisos de ubicacion denegados", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        } else if (requestCode == BACKGROUND_LOCATION_PERMISSION_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos de ubicacion otorgados", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                Toast.makeText(this, "Permisos de ubicacion denegados", Toast.LENGTH_SHORT)
                     .show()
             }
         }

@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    companion object {
+        private const val PREFERENCES_KEY = "app_preferences"
+        private const val POLICIES_SHOWN_KEY = "policies_shown"
+        private const val LOGGED_IN_KEY = "logged_in"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,37 +41,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        firtAppRun()
-        userLoggedIn()
+        appRun()
         initListener()
         initNavigation()
     }
 
-    private fun firtAppRun() {
-        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val alreadyShown = sharedPreferences.getBoolean("policies_shown", false)
+    private fun appRun() {
+        val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+        val policiesShown = sharedPreferences.getBoolean(POLICIES_SHOWN_KEY, false)
+        val loggedIn = sharedPreferences.getBoolean(LOGGED_IN_KEY, false)
 
-        Toast.makeText(this, alreadyShown.toString(), Toast.LENGTH_SHORT).show()
-        Toast.makeText(this, "Aqui si entramos", Toast.LENGTH_SHORT).show()
-
-        if (!alreadyShown) {
-            // Lanzar la Activity de Políticas de Privacidad
-            Toast.makeText(this, "Entro a mostrar la pantalla", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, PrivacyPolicyActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun userLoggedIn() {
-        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-
-        if (!isLoggedIn) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            setContentView(R.layout.activity_main)
+        when {
+            !policiesShown -> {
+                val intent = Intent(this, PrivacyPolicyActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            !loggedIn -> {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            else -> {
+                setContentView(R.layout.activity_main)
+            }
         }
     }
 

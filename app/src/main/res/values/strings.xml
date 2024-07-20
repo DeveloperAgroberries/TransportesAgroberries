@@ -34,4 +34,15 @@
     <string name="privacy_policies_about_fragment">Políticas de privacidad</string>
     <string name="title_activity_login">LoginActivity</string>
 
+    //Privacy Policy
+    <string name="location_and_other_policy_activity">Sobre tu ubicación y otros permisos</string>
+    <string name="like_describe_policy_activity">Como se describe en nuestra</string>
+    <string name="privacy_policy_activity">Politica de Privacidad.</string>
+    <string name="description_policy_activity">Si otorgas los permisos solicitados por nuestra aplicación (Agroberries México Transportes - APP) a mostrarse a continuación, usamos la ubicación de tu dispositivo como dato recopilatorio, la cual forma parte de la información necesaria para realizar las capturas de nuestra app (Agroberries México Transportes - APP) para muestra y uso de los mismos.</string>
+    <string name="description2_policy_activity">Tambien podemos usar y compartir esta información con socios confiables para brindarte nuestros servicios y mejorarlos.</string>
+    <string name="description3_policy_activity">Independientemente de que permitas o no el acceso a tu ubicación, puedes continuar utilizando nuestra app (Agroberries México Transportes - APP) de manera limitada.
+                                         Tenga en cuenta que denegar el acceso a la ubicación de su dispositivo cuando se le solicite no impide el acceso a la información de ubicación general incrustada en su dirección IP.
+                                         Puedes cambiar los permisos otorgados en esta aplicación en cualquier momento.</string>
+    <string name="rights_policy_activity">Todos los derechos reservados © Agroberries México 2024-2026</string>
+
 </resources>
