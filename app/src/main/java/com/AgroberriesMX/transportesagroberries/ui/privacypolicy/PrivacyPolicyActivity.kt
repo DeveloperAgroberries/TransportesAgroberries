@@ -40,7 +40,6 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         binding.btnPermissions.setOnClickListener {
             val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
             val permissions = listOf(
-                Pair(CAMERA, CAMERA_PERMISSION_CODE),
                 Pair(ACCESS_FINE_LOCATION, FINE_LOCATION_PERMISSION_CODE)
             )
 
@@ -59,18 +58,18 @@ class PrivacyPolicyActivity : AppCompatActivity() {
 
         }
 
-//        binding.btnPermissions.setOnClickListener {
-//            val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
-//
-//            with(sharedPreferences.edit()){
-//                putBoolean(POLICIES_SHOWN_KEY, true)
-//                apply()
-//            }
-//
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
+        binding.btnPermissions.setOnClickListener {
+            val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+
+            with(sharedPreferences.edit()){
+                putBoolean(POLICIES_SHOWN_KEY, true)
+                apply()
+            }
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun checkPermission(permission: String, requestCode: Int) {
@@ -92,18 +91,18 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == FINE_LOCATION_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos de ubicación otorgados", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Permisos de ubicación otorgados", Toast.LENGTH_LONG)
                     .show()
             } else {
-                Toast.makeText(this, "Permisos de ubicación denegados", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Permisos de ubicación denegados", Toast.LENGTH_LONG)
                     .show()
             }
         } else if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permisos de camara otorgados", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Permisos de camara otorgados", Toast.LENGTH_LONG)
                     .show()
             } else {
-                Toast.makeText(this, "Permisos de camara denegados", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Permisos de camara denegados", Toast.LENGTH_LONG)
                     .show()
             }
         }

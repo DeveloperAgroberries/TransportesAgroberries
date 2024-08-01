@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">TransportesAgroberries</string>
 
+    //Login
+    <string name="login_user">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_content_desc_logo">Logo de la empresa</string>
+    <string name="login_content_desc_user">Logo usuario</string>
+    <string name="login_content_desc_password">Logo contraseña</string>
+    <string name="login_button">Ingresar</string>
+
     //Nav Bar
     <string name="home_nav_bar">Home</string>
     <string name="sync_nav_bar">Sincronización</string>
@@ -44,5 +52,7 @@
                                          Tenga en cuenta que denegar el acceso a la ubicación de su dispositivo cuando se le solicite no impide el acceso a la información de ubicación general incrustada en su dirección IP.
                                          Puedes cambiar los permisos otorgados en esta aplicación en cualquier momento.</string>
     <string name="rights_policy_activity">Todos los derechos reservados © Agroberries México 2024-2026</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

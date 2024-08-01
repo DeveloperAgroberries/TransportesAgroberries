@@ -1,7 +1,11 @@
 package com.AgroberriesMX.transportesagroberries.ui.login
 
+import com.AgroberriesMX.transportesagroberries.domain.model.TokenModel
+
 sealed class LoginState {
     data object Loading:LoginState()
-    data class Error(val error:String):LoginState()
-    data class Success(val success:String):LoginState()
+    data object Waiting:LoginState()
+
+    data class Error(val message:String):LoginState()
+    data class Success(val success:TokenModel):LoginState()
 }

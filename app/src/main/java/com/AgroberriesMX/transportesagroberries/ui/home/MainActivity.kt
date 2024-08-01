@@ -2,8 +2,9 @@ package com.AgroberriesMX.transportesagroberries.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
@@ -22,16 +23,30 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var navController: NavController
-
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private var doubleBackToExitPressedOnce = false
 
     companion object {
         private const val PREFERENCES_KEY = "app_preferences"
         private const val POLICIES_SHOWN_KEY = "policies_shown"
         private const val LOGGED_IN_KEY = "logged_in"
+        private const val PRIVACY_POLICY_REQUEST_CODE = 1
     }
+
+    private val startPrivacyPolicyActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+                with(sharedPreferences.edit()) {
+                    putBoolean(POLICIES_SHOWN_KEY, true)
+                    apply()
+                }
+            } else {
+                finish()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,16 +69,14 @@ class MainActivity : AppCompatActivity() {
         when {
             !policiesShown -> {
                 val intent = Intent(this, PrivacyPolicyActivity::class.java)
-                startActivity(intent)
+                startPrivacyPolicyActivity.launch(intent)
                 finish()
             }
+
             !loggedIn -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-            }
-            else -> {
-                setContentView(R.layout.activity_main)
             }
         }
     }
@@ -88,23 +101,24 @@ class MainActivity : AppCompatActivity() {
                 R.id.navDriverData,
                 R.id.navSync,
                 R.id.navAbout,
-                R.id.navLogout,
+                R.id.navLogout
             ), binding.drawerLayout
         )
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
-//        binding.navView.setNavigationItemSelectedListener { menuItem ->
-//            when (menuItem.itemId) {
-//                R.id.navLogout -> {
-//                    // Lógica para logout
-//                    handleLogout()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navLogout -> {
+                    // Lógica para logout
+                    showExitConfirmationData()
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -115,22 +129,57 @@ class MainActivity : AppCompatActivity() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            onBackPressedDispatcher.onBackPressed()
+            if(navController.currentDestination?.id == R.id.navDriverData){
+                showExitConfirmationData()
+            }else{
+                onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
 
-//    private fun handleLogout() {
-//        // Aquí puedes agregar la lógica para el logout
-//        // Por ejemplo, limpiar las preferencias compartidas y regresar a la pantalla de login
-//        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
-//        val editor = sharedPreferences.edit()
-//        editor.clear()
-//        editor.apply()
-//
-//        // Lanzar la actividad de login
-////        val intent = Intent(this, LoginActivity::class.java)
-////        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-////        startActivity(intent)
-////        finish()
+    private fun showExitConfirmationData() {
+        AlertDialog.Builder(this)
+            .setMessage("Quieres salir de la aplicacion?")
+            .setCancelable(false)
+            .setPositiveButton("Si"){
+                dialog, _->
+                dialog.dismiss()
+                handleLogout()
+            }
+            .setNegativeButton("No"){
+                dialog, _->
+                dialog.dismiss()
+                doubleBackToExitPressedOnce = false
+            }
+            .create()
+            .show()
+    }
+
+    private fun handleLogout() {
+        val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+
+        // Lanzar la actividad de login
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == PRIVACY_POLICY_REQUEST_CODE) {
+//            if (resultCode == RESULT_OK) {
+//                val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
+//                with(sharedPreferences.edit()) {
+//                    putBoolean(POLICIES_SHOWN_KEY, true)
+//                    apply()
+//                }
+//            } else {
+//                finish()
+//            }
+//        }
 //    }
 }

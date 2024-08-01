@@ -21,12 +21,23 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release"){
             isMinifyEnabled = false
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            resValue("string", "AgroberriesMX","Transportes Agroberries")
+
+            buildConfigField("String", "BASE_URL","\"http://54.165.41.23:5053/api/TransportApp/\"")
+        }
+
+        getByName("debug"){
+            isDebuggable = true
+            resValue("string", "AgroberriesMX", "[DEBUG] Transportes Agroberries")
+            buildConfigField("String", "BASE_URL", "\"http://54.165.41.23:5053/api/TransportApp/\"")
         }
     }
     compileOptions {
@@ -45,19 +56,28 @@ android {
 
 dependencies {
     val navVersion = "2.7.7"
+    val daggerHiltVersion = "2.48"
+    val retrofitVersion = "2.9.0"
+    val okHttpVersion = "4.9.1"
 
     //NavComponent
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
     //DaggerHilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-compiler:2.48")
+    implementation("com.google.dagger:hilt-android:$daggerHiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$daggerHiltVersion")
 
     //Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.3.1")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+
+    //OkHttp
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
+
+    //SQLite
+    implementation("androidx.sqlite:sqlite-ktx:2.4.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.7.0")
