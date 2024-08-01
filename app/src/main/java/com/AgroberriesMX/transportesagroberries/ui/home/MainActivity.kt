@@ -10,6 +10,7 @@ import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -26,13 +27,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private var doubleBackToExitPressedOnce = false
-
     companion object {
         private const val PREFERENCES_KEY = "app_preferences"
         private const val POLICIES_SHOWN_KEY = "policies_shown"
         private const val LOGGED_IN_KEY = "logged_in"
-        private const val PRIVACY_POLICY_REQUEST_CODE = 1
     }
 
     private val startPrivacyPolicyActivity =
@@ -108,15 +106,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
-        binding.navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
+        binding.navView.setNavigationItemSelectedListener{
+            menuItem ->
+            when(menuItem.itemId){
                 R.id.navLogout -> {
-                    // Lógica para logout
                     showExitConfirmationData()
                     true
                 }
-
-                else -> false
+                else ->{
+                    NavigationUI.onNavDestinationSelected(menuItem, navController)
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
             }
         }
     }
@@ -129,11 +130,7 @@ class MainActivity : AppCompatActivity() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            if(navController.currentDestination?.id == R.id.navDriverData){
-                showExitConfirmationData()
-            }else{
-                onBackPressedDispatcher.onBackPressed()
-            }
+            showExitConfirmationData()
         }
     }
 
@@ -142,14 +139,13 @@ class MainActivity : AppCompatActivity() {
             .setMessage("Quieres salir de la aplicacion?")
             .setCancelable(false)
             .setPositiveButton("Si"){
-                dialog, _->
+                    dialog, _->
                 dialog.dismiss()
                 handleLogout()
             }
             .setNegativeButton("No"){
-                dialog, _->
+                    dialog, _->
                 dialog.dismiss()
-                doubleBackToExitPressedOnce = false
             }
             .create()
             .show()
