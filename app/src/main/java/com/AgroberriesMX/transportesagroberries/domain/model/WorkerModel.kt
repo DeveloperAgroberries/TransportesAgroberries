@@ -1,11 +1,10 @@
 package com.AgroberriesMX.transportesagroberries.domain.model
 
 data class WorkerModel(
-    val controlLog: String,
-    val codigoTra: String,
-    val nombreTra: String,
-    val apellidoPatTra: String,
-    val apellidoMatTra: String,
-    val nombreLug: String,
-    val nombreCam: String
+    val controlLog: Int,
+    val cCodigoTra: String,
+    val vNombreTra: String,
+    val vApellidopatTra: String,
+    val vApellidomatTra: String,
+    val cCodigoLug: String
 )

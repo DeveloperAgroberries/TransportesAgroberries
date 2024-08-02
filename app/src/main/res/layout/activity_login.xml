@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="320dp"
-        android:background="@drawable/headerbkg"
+        android:backgroundTint="@color/primary"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,19 +40,18 @@
             app:strokeWidth="1dp">
 
             <ImageView
-                android:contentDescription="@string/login_content_desc_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/nav_agroberries_logo"
-                />
+                android:contentDescription="@string/login_content_desc_logo"
+                android:src="@drawable/nav_agroberries_logo" />
 
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcvUser"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="48dp"
             android:layout_marginTop="128dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="16dp"
@@ -69,10 +68,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:contentDescription="@string/login_content_desc_user"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/login_content_desc_user"
                     android:src="@drawable/ic_user" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -80,6 +79,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
                     android:hint="@string/login_user">
 
                     <!--this is the actual edit text which takes the input-->
@@ -101,9 +101,9 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcvPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_height="64dp"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,10 +119,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:contentDescription="@string/login_content_desc_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/login_content_desc_password"
                     android:src="@drawable/ic_password" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -130,6 +130,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginVertical="4dp"
                     android:hint="@string/login_password">
 
                     <!--this is the actual edit text which takes the input-->
@@ -151,13 +152,13 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginTop="32dp"
             android:backgroundTint="@color/primary"
             android:text="@string/login_button"
             android:textColor="@color/white"
-            android:textStyle="bold"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mcvPassword" />

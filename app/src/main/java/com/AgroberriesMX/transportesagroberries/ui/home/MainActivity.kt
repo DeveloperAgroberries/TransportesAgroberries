@@ -1,9 +1,9 @@
 package com.AgroberriesMX.transportesagroberries.ui.home
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -26,25 +26,28 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var persistentPrefs: SharedPreferences
+    private lateinit var sessionPrefs: SharedPreferences
 
     companion object {
-        private const val PREFERENCES_KEY = "app_preferences"
+        private const val PERSISTENT_PREFERENCES_KEY = "persistent_prefs"
+        private const val SESSION_PREFERENCES_KEY = "session_prefs"
         private const val POLICIES_SHOWN_KEY = "policies_shown"
         private const val LOGGED_IN_KEY = "logged_in"
     }
 
-    private val startPrivacyPolicyActivity =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
-                with(sharedPreferences.edit()) {
-                    putBoolean(POLICIES_SHOWN_KEY, true)
-                    apply()
-                }
-            } else {
-                finish()
-            }
-        }
+//    private val startPrivacyPolicyActivity =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == RESULT_OK) {
+//                persistentPrefs = getSharedPreferences(PERSISTENT_PREFERENCES_KEY, MODE_PRIVATE)
+//                with(persistentPrefs.edit()) {
+//                    putBoolean(POLICIES_SHOWN_KEY, true)
+//                    apply()
+//                }
+//            } else {
+//                finish()
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,23 +63,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun appRun() {
-        val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
-        val policiesShown = sharedPreferences.getBoolean(POLICIES_SHOWN_KEY, false)
-        val loggedIn = sharedPreferences.getBoolean(LOGGED_IN_KEY, false)
+        persistentPrefs = getSharedPreferences(PERSISTENT_PREFERENCES_KEY, MODE_PRIVATE)
+        sessionPrefs = getSharedPreferences(SESSION_PREFERENCES_KEY, MODE_PRIVATE)
+        val policiesShown = persistentPrefs.getBoolean(POLICIES_SHOWN_KEY, false)
+        val loggedIn = sessionPrefs.getBoolean(LOGGED_IN_KEY, false)
 
         when {
             !policiesShown -> {
                 val intent = Intent(this, PrivacyPolicyActivity::class.java)
-                startPrivacyPolicyActivity.launch(intent)
+                startActivity(intent)
+                //startPrivacyPolicyActivity.launch(intent)
                 finish()
             }
 
             !loggedIn -> {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+                navigateToLogin()
             }
         }
+    }
+
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun initListener() {
@@ -106,14 +115,14 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
 
-        binding.navView.setNavigationItemSelectedListener{
-            menuItem ->
-            when(menuItem.itemId){
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
                 R.id.navLogout -> {
                     showExitConfirmationData()
                     true
                 }
-                else ->{
+
+                else -> {
                     NavigationUI.onNavDestinationSelected(menuItem, navController)
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                     true
@@ -138,13 +147,11 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setMessage("Quieres salir de la aplicacion?")
             .setCancelable(false)
-            .setPositiveButton("Si"){
-                    dialog, _->
+            .setPositiveButton("Si") { dialog, _ ->
                 dialog.dismiss()
                 handleLogout()
             }
-            .setNegativeButton("No"){
-                    dialog, _->
+            .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
@@ -152,30 +159,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleLogout() {
-        val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
+        sessionPrefs = getSharedPreferences(SESSION_PREFERENCES_KEY, MODE_PRIVATE)
+        val editor = sessionPrefs.edit()
         editor.clear()
         editor.apply()
 
         // Lanzar la actividad de login
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
+        navigateToLogin()
     }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == PRIVACY_POLICY_REQUEST_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                val sharedPreferences = getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE)
-//                with(sharedPreferences.edit()) {
-//                    putBoolean(POLICIES_SHOWN_KEY, true)
-//                    apply()
-//                }
-//            } else {
-//                finish()
-//            }
-//        }
-//    }
 }
