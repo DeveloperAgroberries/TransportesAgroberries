@@ -3,10 +3,10 @@ package com.AgroberriesMX.transportesagroberries.ui.login
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.AgroberriesMX.transportesagroberries.databinding.ActivityLoginBinding
@@ -64,15 +64,18 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.state.observe(this, Observer { state ->
             when (state) {
                 is LoginState.Waiting -> {
-                    binding.pb.isVisible = false
+                    binding.pb.visibility = View.GONE
                 }
 
                 is LoginState.Loading -> {
-                    binding.pb.isVisible = true
+                    binding.pb.visibility = View.VISIBLE
+                    binding.etUser.isEnabled = false
+                    binding.etPassword.isEnabled = false
+                    binding.btnLogin.isEnabled = false
                 }
 
                 is LoginState.Success -> {
-                    binding.pb.isVisible = false
+                    binding.pb.visibility = View.GONE
                     val token = state.success.token // Suponiendo que 'state' tiene un campo 'token'
                     saveToken(token)
                     synchronizeCatalogs()
@@ -80,6 +83,10 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 is LoginState.Error -> {
+                    binding.pb.visibility = View.GONE
+                    binding.etUser.isEnabled = true
+                    binding.etPassword.isEnabled = true
+                    binding.btnLogin.isEnabled = true
                     Toast.makeText(this, "${state.message}", Toast.LENGTH_LONG).show()
                 }
 

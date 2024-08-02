@@ -15,11 +15,9 @@ class PrivacyPolicyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPrivacyPolicyBinding
     private lateinit var persistentPrefs: SharedPreferences
-    private lateinit var sessionPrefs: SharedPreferences
 
     companion object {
         private const val PERSISTENT_PREFERENCES_KEY = "persistent_prefs"
-        private const val SESSION_PREFERENCES_KEY = "session_prefs"
         private const val POLICIES_SHOWN_KEY = "policies_shown"
         private const val PERMISSIONS_REQUEST_CODE = 123
     }
@@ -32,6 +30,7 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         initUI()
     }
 
+    //TODO: Add the syncronice catalogs method
     private fun initUI() {
         initListeners()
     }

@@ -8,4 +8,7 @@
     <color name="primary">#7BB328</color>
     <color name="secondary">#081165</color>
 
+    //login
+    <color name="black_alpha">#98000000</color>
+
 </resources>
