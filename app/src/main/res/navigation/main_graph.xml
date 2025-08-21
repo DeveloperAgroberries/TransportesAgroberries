@@ -24,7 +24,25 @@
     <fragment
         android:id="@+id/scannerFragment"
         android:name="com.AgroberriesMX.transportesagroberries.ui.scanner.ScannerFragment"
-        android:label="fragment_scanner"
-        tools:layout="@layout/fragment_scanner" />
+        android:label="@string/scanner"
+        tools:layout="@layout/fragment_scanner">
 
+        <action
+            android:id="@+id/action_scannerFragment_to_scannerActiveFragment"
+            app:destination="@id/scannerActiveFragment" />
+    </fragment>
+
+    <!-- 3. Define el fragmento de destino (scannerActiveFragment) como un fragmento normal. -->
+    <fragment
+        android:id="@+id/scannerActiveFragment"
+        android:name="com.AgroberriesMX.transportesagroberries.ui.scanner.active.ScannerActiveFragment"
+        android:label="ScannerActiveFragment"
+        tools:layout="@layout/fragment_scanner_active">
+
+        <!-- AÑADE ESTO -->
+        <argument
+            android:name="scannedContent"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

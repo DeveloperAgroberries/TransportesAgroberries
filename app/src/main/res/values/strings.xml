@@ -8,6 +8,7 @@
     <string name="login_content_desc_user">Logo usuario</string>
     <string name="login_content_desc_password">Logo contraseña</string>
     <string name="login_button">Ingresar</string>
+    <string name="remind_user">Recordar usuario</string>
 
     //Nav Bar
     <string name="home_nav_bar">Home</string>
@@ -21,12 +22,14 @@
     <string name="graph_driver_data_fragment">Datos del chofer</string>
     <string name="graph_sync_fragment">Sincronizacion</string>
     <string name="graph_about_fragment">Acerca De...</string>
+    <string name="scanner">Registro Automático</string>
 
     //Driver Data Fragment
     <string name="plate_driver_data_fragment">Placas del vehiculo:</string>
     <string name="route_driver_data_fragment">Ruta:</string>
     <string name="name_driver_data_fragment">Nombre del chofer</string>
     <string name="confirm_driver_data_fragment">Confirmar</string>
+    <string name="instrucciones">Selecciona tu vehiculo y tu ruta para continuar con la captura.</string>
 
     //Sync Fragment
     <string name="download_data_sync_fragment">Descargar Catalogos</string>
@@ -37,8 +40,8 @@
     <string name="doubts_about_fragment">¿Tienes dudas?</string>
     <string name="contact_us_about_fragment">Contactanos</string>
     <string name="mail1_about_fragment">aorozco@agroberries.mx</string>
-    <string name="mail2_about_fragment">fcastellanos@agroberries.mx</string>
-    <string name="version_about_fragment">Version: 3.0.0</string>
+    <string name="mail2_about_fragment">programador@agroberries.mx</string>
+    <string name="version_about_fragment">Version: 1.0</string>
     <string name="privacy_policies_about_fragment">Políticas de privacidad</string>
     <string name="title_activity_login">LoginActivity</string>
 
@@ -54,5 +57,17 @@
     <string name="rights_policy_activity">Todos los derechos reservados © Agroberries México 2024-2026</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- ESCANER -->
+    <string name="control_transportes">Registro Automático</string>
+    <string name="description">Posiciona el codigo QR/Barras del trabajador frente a la camára para escanear</string>
+    <string name="scan_button">Activa Escaner</string>
+    <string name="footer">Agroberries TI México</string>
+
+    //Scanner Active Fragment
+    <string name="escanear_credencial">Escanear Credencial</string>
+    <string name="activarFlash">Activar Flash</string>
+    <string name="counter">Numero de trabajadores: </string>
+    <string name="escanea_codigo">Escanea el código QR o de barras</string>
 
 </resources>

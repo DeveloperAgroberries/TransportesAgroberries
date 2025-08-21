@@ -37,8 +37,16 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/ic_driver"/>
-
                 </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:text="@string/instrucciones"
+                    android:textStyle="bold">
+
+                </TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,8 +62,10 @@
                     android:textStyle="bold"/>
 
                 <Spinner
+                    android:id="@+id/spinner_placas"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:padding="13dp" />
 
             </LinearLayout>
 
@@ -73,8 +83,10 @@
                         android:textStyle="bold"/>
 
                     <Spinner
+                        android:id="@+id/dataRutas"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:padding="13dp"/>
 
                 </LinearLayout>
 
@@ -95,6 +107,7 @@
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNameDriver"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -111,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/primary"
+            android:backgroundTint="@color/agroWorld"
             android:text="@string/confirm_driver_data_fragment"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -22,7 +22,8 @@ class DatabaseHelper(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, 
             CREATE TABLE z_nomruta (
                 controlLog INTEGER PRIMARY KEY AUTOINCREMENT,
                 cControlRut TEXT,
-                vDescripcionRut TEXT
+                vDescripcionRut TEXT,
+                cActivaRuta TEXT
             )
         """
 

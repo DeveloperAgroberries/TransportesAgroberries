@@ -1,5 +1,7 @@
 package com.AgroberriesMX.transportesagroberries.data.core.interceptors
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
@@ -11,6 +13,10 @@ class AuthInterceptor @Inject constructor(private val tokenManager: TokenManager
     }
 }
 
-class TokenManager @Inject constructor(){
-    fun getToken():String = ""
+class TokenManager @Inject constructor(@ApplicationContext private val context: Context){
+
+    private val sharedPreferences = context.getSharedPreferences("session_prefs", Context.MODE_PRIVATE)
+    fun getToken():String {
+        return sharedPreferences.getString("access_token","") ?: ""
+    }
 }

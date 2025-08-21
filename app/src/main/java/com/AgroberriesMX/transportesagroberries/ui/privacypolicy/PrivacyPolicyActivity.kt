@@ -30,7 +30,7 @@ class PrivacyPolicyActivity : AppCompatActivity() {
         initUI()
     }
 
-    //TODO: Add the syncronice catalogs method
+    //TODO: Add the synchronize catalogs method
     private fun initUI() {
         initListeners()
     }

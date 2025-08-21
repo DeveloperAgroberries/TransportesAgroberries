@@ -1,7 +1,6 @@
 package com.AgroberriesMX.transportesagroberries.domain.usecase
 
 import com.AgroberriesMX.transportesagroberries.data.network.request.LoginRequest
-import com.AgroberriesMX.transportesagroberries.data.network.response.LoginResponse
 import com.AgroberriesMX.transportesagroberries.domain.Repository
 import javax.inject.Inject
 

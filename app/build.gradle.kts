@@ -31,13 +31,15 @@ android {
 
             resValue("string", "AgroberriesMX","Transportes Agroberries")
 
-            buildConfigField("String", "BASE_URL","\"http://54.165.41.23:5053/api/TransportApp/\"")
+            //buildConfigField("String", "BASE_URL","\"http://54.165.41.23:5053/api/TransportApp/\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.214:5011/api/TransportApp/\"")
         }
 
         getByName("debug"){
             isDebuggable = true
             resValue("string", "AgroberriesMX", "[DEBUG] Transportes Agroberries")
-            buildConfigField("String", "BASE_URL", "\"http://54.165.41.23:5053/api/TransportApp/\"")
+            //buildConfigField("String", "BASE_URL", "\"http://54.165.41.23:5053/api/TransportApp/\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.214:5011/api/TransportApp/\"")
         }
     }
     compileOptions {
@@ -86,4 +88,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+
+    // Para el escaneo de QR (Zxing)
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0") // O la versión más reciente
+
+    implementation("androidx.camera:camera-core:1.3.3")
+    implementation("androidx.camera:camera-camera2:1.3.3")
+    implementation("androidx.camera:camera-lifecycle:1.3.3")
+    implementation("androidx.camera:camera-view:1.3.3")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
 }

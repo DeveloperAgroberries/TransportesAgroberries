@@ -7,22 +7,13 @@
     android:background="@color/white"
     tools:context=".ui.login.LoginActivity">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="280dp"
-        android:background="@drawable/login_background"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/agroWorld">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvLogo"
@@ -148,13 +139,23 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <CheckBox
+            android:id="@+id/cbReminder"
+            android:text="@string/remind_user"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mcvPassword"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="48dp"
-            android:layout_marginTop="32dp"
-            android:backgroundTint="@color/primary"
+            android:layout_marginTop="64dp"
+            android:backgroundTint="@color/buttonLogin"
             android:text="@string/login_button"
             android:textColor="@color/white"
             android:textSize="16sp"
