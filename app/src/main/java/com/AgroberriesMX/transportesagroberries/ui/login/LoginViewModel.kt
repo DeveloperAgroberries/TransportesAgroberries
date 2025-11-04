@@ -61,7 +61,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    // Método privado para manejar la lógica de login local
+    // Metodo para menejar el login local
     private fun attemptLocalLogin(userId: String, password: String) {
         if (localAuthRepository.validateCredentials(userId, password)) {
             // Éxito Offline: Enviamos null como token pero isLocal = true
