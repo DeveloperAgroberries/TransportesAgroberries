@@ -26,22 +26,22 @@
 
         <!-- Esta View simula la línea de escaneo, animada en el código Kotlin. -->
         <!-- NOTA: El DecoratedBarcodeView tiene su propia línea de escaneo. Puedes ocultar esta o modificarla si lo deseas. -->
-        <View
+        <!--View
             android:id="@+id/scan_line"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/red" />
+            android:background="@color/red" /-->
 
         <!-- Texto informativo -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="200dp"
             android:text="@string/escanea_codigo"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
     </FrameLayout>
@@ -51,7 +51,7 @@
         android:id="@+id/footer_scanner_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/agroWorld"
+        android:background="@color/principal"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp"

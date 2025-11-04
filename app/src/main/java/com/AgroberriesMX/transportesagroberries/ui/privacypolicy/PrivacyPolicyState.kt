@@ -9,5 +9,5 @@ sealed class PrivacyPolicyState {
     data object Waiting:PrivacyPolicyState()
     data object Loading:PrivacyPolicyState()
     data class Error(val message: String):PrivacyPolicyState()
-    data class Success(val logins: LoginModel, val routes: List<RouteModel>, val vehicles: List<VehicleModel>, val worker: WorkerModel):PrivacyPolicyState()
+    data class Success(val logins: LoginModel, val routes: List<RouteModel>, val vehicles: List<VehicleModel>, val worker: List<WorkerModel>):PrivacyPolicyState()
 }

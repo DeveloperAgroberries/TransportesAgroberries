@@ -13,16 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/agroWorld">
+        android:background="@color/principal">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
             android:layout_gravity="center"
             android:layout_marginTop="64dp"
             android:background="@color/white"
-            app:cardCornerRadius="58dp"
+            app:cardCornerRadius="108dp"
             app:cardPreventCornerOverlap="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,11 +30,16 @@
             app:strokeColor="@color/black"
             app:strokeWidth="1dp">
 
-            <ImageView
+            <!--ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/login_content_desc_logo"
-                android:src="@drawable/nav_agroberries_logo" />
+                android:src="@drawable/nav_agroberries_logo" /-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/app_transportes_2_0"
+                android:contentDescription="@string/login_content_desc_logo" />
 
         </androidx.cardview.widget.CardView>
 
@@ -43,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginHorizontal="48dp"
-            android:layout_marginTop="128dp"
+            android:layout_marginTop="88dp"
             android:backgroundTint="@color/white"
             app:cardCornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"

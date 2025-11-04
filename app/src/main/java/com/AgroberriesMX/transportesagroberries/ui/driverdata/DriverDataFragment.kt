@@ -1,35 +1,45 @@
 package com.AgroberriesMX.transportesagroberries.ui.driverdata
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.AgroberriesMX.transportesagroberries.R
+import com.AgroberriesMX.transportesagroberries.data.local.DatabaseHelper
 import com.AgroberriesMX.transportesagroberries.databinding.FragmentDriverDataBinding
 import com.AgroberriesMX.transportesagroberries.domain.model.RouteModel
 import com.AgroberriesMX.transportesagroberries.domain.model.VehicleModel
+import com.AgroberriesMX.transportesagroberries.ui.shared.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DriverDataFragment : Fragment() {
 
-    // Instancia del ViewModel usando el delegado de Hilt
+    @Inject
+    lateinit var dbHelper: DatabaseHelper
+
     private val driverDataViewModel by viewModels<DriverDataViewModel>()
-
-    // Variable para el ViewBinding, usando el patrón de _binding
     private var _binding: FragmentDriverDataBinding? = null
-
-    // Propiedad 'get' para evitar NullPointerExceptions después de onDestroyView
     private val binding get() = _binding!!
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    // Declara las listas aquí, a nivel de clase, pero no las inicialices con datos
+    private lateinit var vehicleItems: List<SpinnerItem>
+    private lateinit var routeItems: List<SpinnerItem>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,41 +49,31 @@ class DriverDataFragment : Fragment() {
         return binding.root
     }
 
-    // onViewCreated es el lugar ideal para configurar las vistas y observar el ViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // **PASO 1: Llamar a la función para obtener las placas sin token**
+        // **Paso 1: Llamar a las funciones para obtener los datos**
         driverDataViewModel.getPlacasData()
         driverDataViewModel.getRutasData()
+        driverDataViewModel.getWorkersData()
 
-
-        // **PASO 2: Observar el StateFlow del ViewModel**
+        // **Paso 2: Observar el StateFlow del ViewModel**
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 driverDataViewModel.state.collect { state ->
                     when (state) {
                         is DriverState.Loading -> {
-                            // Opcional: Mostrar un indicador de carga
-                            // binding.progressBar.visibility = View.VISIBLE
+                            // Puedes mostrar un indicador de carga aquí
                         }
                         is DriverState.SuccessPlacas -> {
-                            // Opcional: Ocultar el indicador de carga
-                            // binding.progressBar.visibility = View.GONE
-
-                            // **PASO 3: Llenar el Spinner con los datos**
+                            // Llenar el Spinner de placas con los datos del ViewModel
                             setupPlacasSpinner(state.successPlacas)
                         }
                         is DriverState.SuccessRutas -> {
-                            // Opcional: Ocultar el indicador de carga
-                            // binding.progressBar.visibility = View.GONE
-
-                            // **PASO 3: Llenar el Spinner con los datos**
+                            // Llenar el Spinner de rutas con los datos del ViewModel
                             setupRutasSpinner(state.successRutas)
                         }
                         is DriverState.Error -> {
-                            // Opcional: Ocultar el indicador de carga y mostrar el error
-                            // binding.progressBar.visibility = View.GONE
                             Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
                         }
                         else -> {
@@ -84,101 +84,174 @@ class DriverDataFragment : Fragment() {
             }
         }
 
-        // **AÑADIMOS EL LISTENER PARA EL BOTÓN CONFIRMAR**
+        // Listener para el campo de texto del nombre del chofer
+        binding.etNameDriver.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                sharedViewModel.driverName.value = s.toString()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Listener para el botón confirmar
         binding.btnConfirm.setOnClickListener {
             validateAndNavigate()
         }
     }
 
-    // **Función para configurar el Spinner con la lista de placas**
+    /*private fun setupPlacasSpinner(vehicleList: List<VehicleModel>) {
+        vehicleItems = vehicleList.map {
+            SpinnerItem(it.cPlacaVeh, it.cControlVeh.toIntOrNull() ?: 0) // ✅ Correct conversion
+        }
+        val vehicleNames = vehicleItems.map { it.name }
+
+        val vehicleAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            vehicleNames
+        )
+        vehicleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerPlacas.adapter = vehicleAdapter
+
+        // Configura el listener con la protección
+        binding.spinnerPlacas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (vehicleItems.isNotEmpty() && position >= 0 && position < vehicleItems.size) {
+                    val selectedItem = vehicleItems[position]
+                    // This line now works correctly as selectedItem.code is an Int
+                    sharedViewModel.selectedVehicleCode.value = selectedItem.code
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }*/
+
     private fun setupPlacasSpinner(vehicleList: List<VehicleModel>) {
-        // Mapea la lista de objetos VehicleModel a una lista de Strings (las placas)
-        val placasList = vehicleList.map { it.cPlacaVeh }
+        vehicleItems = vehicleList.map {
+            // Asegúrate de que el nombre del vehículo sea el valor que quieres mostrar y filtrar
+            SpinnerItem(it.cPlacaVeh, it.cControlVeh.toIntOrNull() ?: 0)
+        }
+        val vehicleNames = vehicleItems.map { it.name }
 
-        // Crea el ArrayAdapter
-        val adapter = ArrayAdapter(
+        // ✅ La clave es usar el layout 'simple_dropdown_item_1line' en el adaptador
+        // Este layout está diseñado para funcionar con AutoCompleteTextView y permite la escritura y el filtrado
+        val placasAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
-            placasList
+            android.R.layout.simple_dropdown_item_1line,
+            vehicleNames
         )
 
-        // Establece el layout para el menú desplegable
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Asignar el adaptador al nuevo AutoCompleteTextView
+        binding.autoCompleteTextViewPlacas.setAdapter(placasAdapter)
 
-        // Asigna el adaptador al Spinner de tu layout (asumiendo que el ID es spinner_placas)
-        binding.spinnerPlacas.adapter = adapter
+        // Listener para cuando el usuario selecciona un item de la lista filtrada
+        binding.autoCompleteTextViewPlacas.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            val selectedPlate = parent.getItemAtPosition(position) as String
+            val selectedVehicle = vehicleItems.find { it.name == selectedPlate }
+            if (selectedVehicle != null) {
+                sharedViewModel.selectedVehicleCode.value = selectedVehicle.code
+            }
+        }
+
+        // Este TextWatcher ya no es necesario si el adaptador es configurado correctamente para el filtrado.
+        // El AutoCompleteTextView se encarga de esto.
     }
 
-    // **Función para configurar el Spinner con la lista de placas**
+    /*private fun setupRutasSpinner(routeList: List<RouteModel>) {
+        // Mapea la lista para el adaptador
+        val spinnerItems = routeList.map {
+            SpinnerItem(it.vDescripcionRut, it.cControlRut.toIntOrNull() ?: 0) // ✅ Correct conversion
+        }
+        val routeNames = spinnerItems.map { it.name }
+
+        val routeAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            routeNames
+        )
+        routeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.dataRutas.adapter = routeAdapter
+
+        // Configura el listener para acceder a la lista original `routeList`
+        binding.dataRutas.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // Protección contra listas vacías
+                if (routeList.isNotEmpty() && position >= 0 && position < routeList.size) {
+                    // ✅ Declara y usa la variable `selectedRoute` aquí dentro
+                    val selectedRoute = routeList[position]
+
+                    // ✅ Aquí puedes usar `selectedRoute` sin problemas
+                    // sharedViewModel.selectedRouteCode.value = selectedRoute.cControlRut FORMA INCORRECTA
+                    sharedViewModel.selectedRouteCode.value = selectedRoute.cControlRut.toIntOrNull()
+                    // sharedViewModel.selectedRouteCost.value = selectedRoute.nCostoRut FORMA INCORRECTA
+                    sharedViewModel.selectedRouteCost.value = selectedRoute.nCostoRut.toDoubleOrNull()
+
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }*/
+
+    // En la función setupRutasSpinner, el código es similar
     private fun setupRutasSpinner(routeList: List<RouteModel>) {
-        // Mapea la lista de objetos VehicleModel a una lista de Strings (las placas)
-        val rutasList = routeList.map { it.vDescripcionRut }
+        val spinnerItems = routeList.map {
+            SpinnerItem(it.vDescripcionRut, it.cControlRut.toIntOrNull() ?: 0)
+        }
+        val routeNames = spinnerItems.map { it.name }
 
-        // Crea el ArrayAdapter
-        val adapter = ArrayAdapter(
+        val rutasAdapter = ArrayAdapter(
             requireContext(),
-            android.R.layout.simple_spinner_item,
-            rutasList
+            android.R.layout.simple_dropdown_item_1line,
+            routeNames
         )
+        binding.autoCompleteTextViewRutas.setAdapter(rutasAdapter)
 
-        // Establece el layout para el menú desplegable
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.autoCompleteTextViewRutas.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            val selectedRouteName = parent.getItemAtPosition(position) as String
+            val selectedRoute = routeList.find { it.vDescripcionRut == selectedRouteName }
 
-        // Asigna el adaptador al Spinner de tu layout (asumiendo que el ID es spinner_placas)
-        binding.dataRutas.adapter = adapter
+            if (selectedRoute != null) {
+                sharedViewModel.selectedRouteCode.value = selectedRoute.cControlRut.toIntOrNull()
+                sharedViewModel.selectedRouteCost.value = selectedRoute.nCostoRut.toDoubleOrNull()
+            }
+        }
     }
 
-    // **NUEVA FUNCIÓN PARA VALIDAR CAMPOS Y NAVEGAR**
     private fun validateAndNavigate() {
         // Obtenemos los valores seleccionados y el texto ingresado
-        val placaSeleccionada = binding.spinnerPlacas.selectedItem as? String
-        val rutaSeleccionada = binding.dataRutas.selectedItem as? String
-        // El TextInputEditText necesita un ID en el XML, lo he nombrado "etNombreChofer"
+        //val placaSeleccionada = binding.spinnerPlacas.selectedItem as? String
+        val placaSeleccionada = binding.autoCompleteTextViewPlacas.text.toString().trim()
+        //val rutaSeleccionada = binding.dataRutas.selectedItem as? String
+        val rutaSeleccionada = binding.autoCompleteTextViewRutas.text.toString().trim()
         val nombreChofer = binding.etNameDriver.text.toString().trim()
 
-        // Validamos que los tres datos estén llenos
         if (placaSeleccionada != null && rutaSeleccionada != null && nombreChofer.isNotEmpty()) {
-            // Si todos los campos están llenos, navegamos al fragmento del escáner
-            // Asegúrate de que esta acción esté definida en tu navigation.xml
-
-            if(isNameValid()){
+            if (isNameValid()) {
                 findNavController().navigate(R.id.scannerFragment)
-            }else{
+            } else {
                 Toast.makeText(context, "Escribe nombre con al menos 1 apellido.", Toast.LENGTH_LONG).show()
             }
         } else {
-            // Si falta algún dato, mostramos un mensaje de error
             Toast.makeText(context, "Por favor, selecciona una placa, una ruta y escribe tu nombre.", Toast.LENGTH_LONG).show()
         }
     }
 
-    /**
-     * Valida que el nombre de usuario contenga al menos un nombre y un apellido.
-     * @return true si el nombre es válido, false en caso contrario.
-     */
     private fun isNameValid(): Boolean {
-        // Obtiene el texto del campo de nombre y elimina espacios al inicio y al final.
         val name = binding.etNameDriver.text.toString().trim()
-
-        // Divide el nombre en partes (palabras) usando el espacio como separador.
         val nameParts = name.split(" ")
-
-        // La validación verifica si el array tiene 2 o más partes.
-        // Esto asegura que haya al menos un nombre y un apellido.
         return if (nameParts.size >= 2) {
-            // El nombre es válido, quita cualquier mensaje de error.
             binding.etNameDriver.error = null
             true
         } else {
-            // El nombre no es válido (falta el apellido), muestra un mensaje de error.
             binding.etNameDriver.error = "Por favor, introduce tu nombre completo (nombre y apellido)."
             false
         }
     }
 
-    // Es una buena práctica limpiar el binding para evitar fugas de memoria
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    data class SpinnerItem(val name: String, val code: Int)
 }

@@ -29,11 +29,12 @@
     <string name="route_driver_data_fragment">Ruta:</string>
     <string name="name_driver_data_fragment">Nombre del chofer</string>
     <string name="confirm_driver_data_fragment">Confirmar</string>
-    <string name="instrucciones">Selecciona tu vehiculo y tu ruta para continuar con la captura.</string>
+    <string name="instrucciones">Selecciona vehiculo y ruta para continuar.</string>
 
     //Sync Fragment
     <string name="download_data_sync_fragment">Descargar Catalogos</string>
     <string name="upload_data_sync_fragment">Enviar Catalogos</string>
+    <string name="upload_data_pending">Pendientes de enviar </string>
 
     //About Fragment
     <string name="developed_by_about_fragment">Desarrollado por el equipo de T.I. Agroberries México</string>
@@ -49,7 +50,12 @@
     <string name="location_and_other_policy_activity">Sobre tu ubicación y otros permisos</string>
     <string name="like_describe_policy_activity">Como se describe en nuestra</string>
     <string name="privacy_policy_activity">Politica de Privacidad.</string>
-    <string name="description_policy_activity">Si otorgas los permisos solicitados por nuestra aplicación (Agroberries México Transportes - APP) a mostrarse a continuación, usamos la ubicación de tu dispositivo como dato recopilatorio, la cual forma parte de la información necesaria para realizar las capturas de nuestra app (Agroberries México Transportes - APP) para muestra y uso de los mismos.</string>
+    <string name="description_policy_activity">Si otorgas los permisos solicitados por nuestra aplicación (Agroberries Transportes AB), usaremos tu dispositivo para **recopilar datos de UBICACIÓN GPS PRECISA** para el funcionamiento esencial de la aplicación.
+
+    **Esta recopilación incluye el uso de tu ubicación EN SEGUNDO PLANO (incluso cuando la aplicación está cerrada o no está en uso) con el ÚNICO propósito de:**
+
+    1. **Rastrear y geocercar la ubicación exacta del escaneo de trabajadores** para validar el punto de servicio y garantizar la transparencia en el registro de asistencia.
+    2. **Generar un registro de ruta** durante el servicio activo para fines de seguridad y control logístico.</string>
     <string name="description2_policy_activity">Tambien podemos usar y compartir esta información con socios confiables para brindarte nuestros servicios y mejorarlos.</string>
     <string name="description3_policy_activity">Independientemente de que permitas o no el acceso a tu ubicación, puedes continuar utilizando nuestra app (Agroberries México Transportes - APP) de manera limitada.
                                          Tenga en cuenta que denegar el acceso a la ubicación de su dispositivo cuando se le solicite no impide el acceso a la información de ubicación general incrustada en su dirección IP.
@@ -68,6 +74,6 @@
     <string name="escanear_credencial">Escanear Credencial</string>
     <string name="activarFlash">Activar Flash</string>
     <string name="counter">Numero de trabajadores: </string>
-    <string name="escanea_codigo">Escanea el código QR o de barras</string>
+    <string name="escanea_codigo">Escanea el código QR / Barras</string>
 
 </resources>

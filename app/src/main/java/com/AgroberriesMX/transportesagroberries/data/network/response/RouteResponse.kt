@@ -5,13 +5,15 @@ import com.google.gson.annotations.SerializedName
 
 data class RouteResponse(
     @SerializedName("cControlRut") val cControlRut:String,
-    @SerializedName("vDescripcionRut") val vDescripcionRut:String
+    @SerializedName("vDescripcionRut") val vDescripcionRut:String,
+    @SerializedName("nCostoRut") val nCostoRut:String
 )
 {
     fun toDomain():RouteModel{
         return RouteModel(
             cControlRut = cControlRut,
-            vDescripcionRut = vDescripcionRut
+            vDescripcionRut = vDescripcionRut,
+            nCostoRut = nCostoRut
         )
     }
 }

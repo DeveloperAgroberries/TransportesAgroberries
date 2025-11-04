@@ -42,13 +42,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:gravity="center"
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/instrucciones"
                     android:textStyle="bold">
 
                 </TextView>
 
-            <LinearLayout
+            <!--LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|center_horizontal"
@@ -67,9 +68,24 @@
                     android:layout_height="wrap_content"
                     android:padding="13dp" />
 
-            </LinearLayout>
+            </LinearLayout-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutPlacas"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/plate_driver_data_fragment"
+                    android:layout_margin="16dp">
 
-                <LinearLayout
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextViewPlacas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:importantForAccessibility="no"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical|center_horizontal"
@@ -88,7 +104,23 @@
                         android:layout_height="wrap_content"
                         android:padding="13dp"/>
 
-                </LinearLayout>
+                </LinearLayout-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutRutas"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/route_driver_data_fragment"
+                    android:layout_margin="16dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/autoCompleteTextViewRutas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:importantForAccessibility="no"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -124,7 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/agroWorld"
+            android:backgroundTint="@color/principal"
             android:text="@string/confirm_driver_data_fragment"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

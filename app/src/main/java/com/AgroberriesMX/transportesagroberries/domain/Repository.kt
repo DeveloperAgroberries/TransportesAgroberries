@@ -1,6 +1,7 @@
 package com.AgroberriesMX.transportesagroberries.domain
 
 import com.AgroberriesMX.transportesagroberries.data.network.request.LoginRequest
+import com.AgroberriesMX.transportesagroberries.domain.model.FormattedRecordsModel
 import com.AgroberriesMX.transportesagroberries.domain.model.LoginModel
 import com.AgroberriesMX.transportesagroberries.domain.model.RouteModel
 import com.AgroberriesMX.transportesagroberries.domain.model.TokenModel
@@ -14,5 +15,7 @@ interface Repository {
     suspend fun getRoutes():List<RouteModel>?
     //suspend fun getVehicles(token: String): VehicleModel?
     suspend fun getVehicles(): List<VehicleModel>?
-    suspend fun getWorkers(token: String): WorkerModel?
+    //suspend fun getWorkers(token: String): WorkerModel?
+    suspend fun getWorkers(): List<WorkerModel>?
+    suspend fun uploadRecords(records: List<FormattedRecordsModel>): Pair<String?, Int?>
 }

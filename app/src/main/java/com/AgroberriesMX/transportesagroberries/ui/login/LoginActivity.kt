@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var persistentPrefs: SharedPreferences
     private val loginViewModel: LoginViewModel by viewModels()
     private val privatePolicyViewModel: PrivacyPolicyViewModel by viewModels()
+    private var currentUser: String? = null
 
     companion object {
         private const val SESSION_PREFERENCES_KEY = "session_prefs"
@@ -57,6 +58,7 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val user = binding.etUser.text.toString().uppercase().trim()
             val password = binding.etPassword.text.toString().trim()
+            currentUser = user // Guarda el usuario en la variable de clase
 
             if (user != "" || password != "") {
                 lifecycleScope.launch {
@@ -106,12 +108,48 @@ class LoginActivity : AppCompatActivity() {
 
                 is LoginState.Success -> {
                     binding.pb.visibility = View.GONE
-                    val token = state.success.token // Suponiendo que 'state' tiene un campo 'token'
-                    saveToken(token)
-                    lifecycleScope.launch {
-                        synchronizeCatalogs()
+                    binding.etUser.isEnabled = true // Habilitar campos y botón al finalizar carga
+                    binding.etPassword.isEnabled = true
+                    binding.btnLogin.isEnabled = true
+
+                    if(state.isLocal){
+                        Toast.makeText(applicationContext, "Inicio de sesión: ¡Acceso offline!", Toast.LENGTH_LONG).show()
+                        saveUserCode(binding.etUser.text.toString().trim())
+                        navigateToMainActivity()
+                    }else{
+                        val token = state.success?.token // Suponiendo que 'state' tiene un campo 'token'
+
+                        if (token != null) {
+                            Toast.makeText(applicationContext, "Inicio de sesión: ¡Acceso online!", Toast.LENGTH_LONG).show()
+                            saveToken(token) // Guarda el token del servidor
+                            saveUserCode(binding.etUser.text.toString().trim())
+                            lifecycleScope.launch {
+                                try {
+                                    synchronizeCatalogs() // Intenta sincronizar porque hay conexión
+                                    navigateToMainActivity()
+                                } catch (e: java.lang.Exception) {
+                                    Toast.makeText(applicationContext, "Error en la sincronización: ${e.message}", Toast.LENGTH_LONG).show()
+                                    // A pesar del error de sincronización, el usuario ya inició sesión
+                                    navigateToMainActivity()
+                                }
+                            }
+                        } else {
+                            // Esto no debería ocurrir si el ViewModel maneja correctamente 'isLocal'
+                            Toast.makeText(applicationContext, "Error: Token nulo en acceso online exitoso.", Toast.LENGTH_LONG).show()
+                            // Considera qué hacer aquí: ¿volver a login, mostrar error crítico?
+                            navigateToMainActivity() // Por ahora, navega para no bloquear al usuario
+                        }
+                        // Asegúrate de que el usuario no sea nulo antes de guardar
+                        /*currentUser?.let { userCode ->
+                            saveUserCode(userCode)
+                        }
+
+                        saveToken(token)
+                        lifecycleScope.launch {
+                            synchronizeCatalogs()
+                        }
+                        navigateToMainActivity()*/
                     }
-                    navigateToMainActivity()
                 }
 
                 is LoginState.Error -> {
@@ -139,7 +177,7 @@ class LoginActivity : AppCompatActivity() {
                     binding.btnLogin.isEnabled = false
                 }
 
-                is LoginState.Success -> {
+                /*is LoginState.Success -> {
                     binding.pb.visibility = View.GONE
                     val token = state.success.token // Suponiendo que 'state' tiene un campo 'token'
                     saveToken(token)
@@ -147,7 +185,7 @@ class LoginActivity : AppCompatActivity() {
                         synchronizeCatalogs()
                     }
                     navigateToMainActivity()
-                }
+                }*/
 
                 is LoginState.Error -> {
                     binding.pb.visibility = View.GONE
@@ -217,5 +255,13 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun saveUserCode(userCode: String) {
+        sessionPrefs = getSharedPreferences(SESSION_PREFERENCES_KEY, MODE_PRIVATE)
+        with(sessionPrefs.edit()) {
+            putString("cCodigoUsu", userCode)
+            apply()
+        }
     }
 }

@@ -31,7 +31,8 @@ class PrivacyPolicyViewModel @Inject constructor(
     var routeList: List<RouteModel> = emptyList()
     //lateinit var vehicleModel: VehicleModel
     var vehicleList: List<VehicleModel> = emptyList()
-    lateinit var workerModel: WorkerModel
+    //lateinit var workerModel: WorkerModel
+    var workerList: List<WorkerModel> = emptyList()
 
     fun dataResponse(token: String) {
         viewModelScope.launch {
@@ -40,7 +41,7 @@ class PrivacyPolicyViewModel @Inject constructor(
                 val responseLogins = getLoginsUseCase(token)
                 val responseRoutes = getRouteUseCase()
                 val responseVehicles = getVehicleUseCase()
-                val responseWorkers = getWorkerUseCase(token)
+                val responseWorkers = getWorkerUseCase()
 
                 if (responseLogins != null && responseRoutes != null && responseVehicles != null && responseWorkers != null) {
                     loginModel = responseLogins
@@ -48,9 +49,10 @@ class PrivacyPolicyViewModel @Inject constructor(
                     routeList = responseRoutes ?: emptyList()
                     //vehicleList = responseVehicles
                     vehicleList = responseVehicles ?: emptyList()
-                    workerModel = responseWorkers
+                    //workerModel = responseWorkers
+                    workerList = responseWorkers ?: emptyList()
 
-                    _state.value = PrivacyPolicyState.Success(loginModel, routeList, vehicleList, workerModel)
+                    _state.value = PrivacyPolicyState.Success(loginModel, routeList, vehicleList, workerList)
                 } else {
                     _state.value = PrivacyPolicyState.Error("Alguno de los datos fallo en la descarga, vuelve a intentarlo.")
                 }

@@ -7,5 +7,6 @@ sealed class LoginState {
     data object Waiting:LoginState()
 
     data class Error(val message:String):LoginState()
-    data class Success(val success:TokenModel):LoginState()
+    //data class Success(val success:TokenModel):LoginState()
+    data class Success(val success:TokenModel? = null, val isLocal: Boolean = false):LoginState()
 }

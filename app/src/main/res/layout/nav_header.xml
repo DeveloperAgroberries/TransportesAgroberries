@@ -3,32 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="166dp"
+    android:layout_height="286dp"
     android:background="@drawable/fondoag"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
+
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:background="@color/white"
-        app:cardCornerRadius="36dp"
+        app:cardCornerRadius="96dp"
         app:cardPreventCornerOverlap="false"
         app:strokeColor="@color/black"
         app:strokeWidth="1dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/nav_agroberries_logo" />
+            android:layout_width="188dp"
+            android:layout_height="195dp"
+            app:cardCornerRadius="36dp"
+            android:src="@drawable/app_transportes_2_0" />
 
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
         android:text="@string/title_nav_bar"
         android:textColor="@color/white"
         android:textStyle="bold" />
@@ -36,7 +39,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="36dp"
         android:text="@string/subtitle_nav_bar"
         android:textColor="@color/white"
         android:textSize="14sp" />
