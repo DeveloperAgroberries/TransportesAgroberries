@@ -15,10 +15,15 @@ android {
         applicationId = "com.AgroberriesMX.transportesagroberries.AB"
         minSdk = 21
         targetSdk = 35
-        versionCode = 4 //Ultima vesion subida a produccion 1 29/10/2025
+        versionCode = 9 //Ultima vesion subida a produccion  01/12/2025
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+       /* ndk {
+            abiFilters += listOf("arm64-v8a")
+            //abiFilters "arm64-v8a", "armeabi-v7a"
+        }*/
     }
 
     buildTypes {
@@ -33,14 +38,14 @@ android {
             resValue("string", "AgroberriesMX","Transportes Agroberries")
 
             buildConfigField("String", "BASE_URL","\"http://54.165.41.23:5053/api/TransportApp/\"")
-            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.184:5011/api/TransportApp/\"")
+            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.60:5011/api/TransportApp/\"")
         }
 
         getByName("debug"){
             isDebuggable = true
             resValue("string", "AgroberriesMX", "[DEBUG] Transportes Agroberries")
             buildConfigField("String", "BASE_URL", "\"http://54.165.41.23:5053/api/TransportApp/\"")
-            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.184:5011/api/TransportApp/\"")
+            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.60:5011/api/TransportApp/\"")
         }
     }
     compileOptions {
@@ -112,5 +117,5 @@ dependencies {
     implementation("androidx.camera:camera-camera2:1.3.3")
     implementation("androidx.camera:camera-lifecycle:1.3.3")
     implementation("androidx.camera:camera-view:1.3.3")
-    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
 }

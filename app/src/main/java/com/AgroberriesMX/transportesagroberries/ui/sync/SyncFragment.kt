@@ -96,7 +96,7 @@ class SyncFragment : Fragment() {
     private fun initListeners() {
         //Ricardo Dimas - Rondines 23/06/2025
         binding.cvUpload.setOnClickListener {
-            binding.cvDownload.isEnabled = false
+            //binding.cvDownload.isEnabled = false
             binding.cvUpload.isEnabled = false
             uploadData()
         }
@@ -113,7 +113,7 @@ class SyncFragment : Fragment() {
                     Toast.makeText(context, "No puedes enviar tus datos, cierra sesion y vuelve a intentarlo", Toast.LENGTH_LONG).show()
                 }
             } finally {
-                binding.cvDownload.isEnabled = true
+                //binding.cvDownload.isEnabled = true
                 binding.cvUpload.isEnabled = true
             }
         }

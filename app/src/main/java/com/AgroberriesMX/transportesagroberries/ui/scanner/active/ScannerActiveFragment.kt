@@ -420,17 +420,21 @@ class ScannerActiveFragment : Fragment() {
             pendingInsertWorker = worker
 
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null && (System.currentTimeMillis() - location.time < 30000)) {
-                    Log.d("ScannerActiveFragment", "Usando lastLocation (fresca). Lat: ${location.latitude}, Lon: ${location.longitude}")
+
+                if (location != null) {
+                    // 🚀 CAMBIO CLAVE: Usamos la ubicación si existe, aunque no sea ultra fresca.
+                    Log.d("Scanner", "Usando lastLocation (existente). Antigüedad: ${(System.currentTimeMillis() - location.time) / 1000}s")
                     insertTransportRecordWithLocation(newCode, worker, location)
                     pendingInsertNewCode = null
                     pendingInsertWorker = null
                 } else {
-                    Log.d("ScannerActiveFragment", "lastLocation no es fresca o es nula, solicitando actualizaciones.")
+                    // La ubicación es realmente nula. Aquí sí es necesario solicitar una nueva.
+                    Log.d("Scanner", "lastLocation es nula, solicitando actualizaciones lentas.")
                     startLocationUpdates()
                 }
             }.addOnFailureListener { e ->
-                Log.e("ScannerActiveFragment", "Error al obtener lastLocation: ${e.message}, solicitando actualizaciones.")
+                // Si hay un error, intentamos actualizar.
+                Log.e("Scanner", "Error al obtener lastLocation, solicitando actualizaciones.")
                 startLocationUpdates()
             }
         } else {
@@ -446,21 +450,34 @@ class ScannerActiveFragment : Fragment() {
         val driverName = sharedViewModel.driverName.value ?: "Sin Nombre"
         val cCodigoUsu = sessionPrefs.getString("cCodigoUsu", "") ?: ""
 
+        // Recomendación: Mantener la validación estricta (Solución 1 de la respuesta anterior)
+        if (selectedVehicleCode == 0 || selectedRouteCode == 0 || driverName == "Sin Nombre" || selectedRouteCost == 0.0) {
+            Toast.makeText(requireContext(), "Error: Los datos de ruta y vehículo no fueron seleccionados.", Toast.LENGTH_LONG).show()
+            return
+        }
+
         // 1. Obtener la hora actual
         val mexicoTimeZone = TimeZone.getTimeZone("America/Mexico_City")
         val calendar = Calendar.getInstance(mexicoTimeZone)
         // 2. Obtener la hora del día en formato de 24 horas (HOUR_OF_DAY)
         val currentHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val currentMinute = calendar.get(Calendar.MINUTE)
 
-        val subidaBajada = dbHelper.getSubidaBajada(newCode)
+        //val subidaBajada = dbHelper.getSubidaBajada(newCode)
 
+        //Log.d("revisarHora", "Hora: ${currentHour}")
         // 3. Realizar la validación
-        // Si la hora es MAYOR o IGUAL a 12 (12:00 PM o después), cTiporegTrn = "1"
-        // Si la hora es MENOR a 12 (antes de 12:00 PM), cTiporegTrn = "0"
-        val cTiporegTrnValue = if (subidaBajada == "0") {
-            "0"
+        // Si la hora es MAYOR o IGUAL a 10 (10:00 AM o después), cTiporegTrn = "1"
+        // Si la hora es MENOR a 10 (antes de 10:00 PM), cTiporegTrn = "0"
+        val cTiporegTrnValue = if (currentHour < 10) {
+            // Si la hora es MENOR a 10 (ej. 09:59 AM)
+            "0" // Subida (Mañana)
+        } else if (currentHour == 10 && currentMinute == 0) {
+            // Si la hora es 10 (ej. 10:00 AM)
+            "1" // Bajada
         } else {
-            "1"
+            // Si la hora es MAYOR a 10 (ej. 10:01 AM)
+            "1" // Bajada
         }
 
         // 1. Obtener la hora actual usando la zona horaria de México
