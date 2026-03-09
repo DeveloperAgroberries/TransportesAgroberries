@@ -13,9 +13,9 @@ android {
 
     defaultConfig {
         applicationId = "com.AgroberriesMX.transportesagroberries.AB"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
-        versionCode = 9 //Ultima vesion subida a produccion  01/12/2025
+        versionCode = 10 //Ultima vesion subida a produccion  06/mar/2026
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -38,14 +38,14 @@ android {
             resValue("string", "AgroberriesMX","Transportes Agroberries")
 
             buildConfigField("String", "BASE_URL","\"http://54.165.41.23:5053/api/TransportApp/\"")
-            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.60:5011/api/TransportApp/\"")
+            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.21:5011/api/TransportApp/\"")
         }
 
         getByName("debug"){
             isDebuggable = true
             resValue("string", "AgroberriesMX", "[DEBUG] Transportes Agroberries")
             buildConfigField("String", "BASE_URL", "\"http://54.165.41.23:5053/api/TransportApp/\"")
-            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.60:5011/api/TransportApp/\"")
+            //buildConfigField("String", "BASE_URL", "\"http://192.168.1.21:5011/api/TransportApp/\"")
         }
     }
     compileOptions {
@@ -67,6 +67,7 @@ dependencies {
     val daggerHiltVersion = "2.51.1"
     val retrofitVersion = "2.9.0"
     val okHttpVersion = "4.12.0"
+    val versionCameraX = "1.5.3"
 
     //NavComponent
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
@@ -113,9 +114,9 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0") // O la versión más reciente
 
-    implementation("androidx.camera:camera-core:1.3.3")
-    implementation("androidx.camera:camera-camera2:1.3.3")
-    implementation("androidx.camera:camera-lifecycle:1.3.3")
-    implementation("androidx.camera:camera-view:1.3.3")
+    implementation("androidx.camera:camera-core:$versionCameraX")
+    implementation("androidx.camera:camera-camera2:$versionCameraX")
+    implementation("androidx.camera:camera-lifecycle:$versionCameraX")
+    implementation("androidx.camera:camera-view:$versionCameraX")
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
 }
